@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  chroma-db:
+    image: chromadb/chroma:latest 
+    container_name: chroma-db
+    hostname: chroma
+    ports:
+      - "8000:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+    volumes:
+      - ./chroma_data:/data
+      - ./app:/app
+    networks:
+    - network
+
+  streamlit-app:
+    container_name: streamlit-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: streamlit-app
+    ports:
+      - "8504:8504"  
+    volumes:
+      - ./app:/app
+    depends_on:
+      - chroma-db
+    networks:
+      - network
+  data-ingestion:
+    container_name: data-ingestion
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python3 app/ingestion.py
+    depends_on:
+      - chroma-db
+    volumes:
+      - ./app:/app
+      - ./app/llamaindex-docs:/llamaindex-docs 
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
