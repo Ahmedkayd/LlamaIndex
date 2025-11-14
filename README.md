@@ -29,7 +29,7 @@ This project is containerized and you can simply run the below commands to test 
 
 - Install `docker and docker-compose` on your machine.
 - Obtain an OpenAI API key.
-- clone this repo `git clone git@bitbucket.org:saccounty/dha-dau-miscellaneous-ahmed.git`
+- clone this repo
 - Go to llamaindex directory in the terminal.
 - Add your openAI api-key in .env file as `OPENAI_API_KEY=xyz`
 - Run `docker-compose up`
